@@ -30,6 +30,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </insert>
 
+    <!--通过登录张号修改密码-->
+    <update id="updatePasswordByLoginName">
+        update sys_user set password = #{password} where login_name = #{loginName}
+    </update>
+
     <!-- 验证登录用户 -->
     <select id="login" resultType="com.ruoyi.system.domain.SysUser">
       select

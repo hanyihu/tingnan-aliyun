@@ -62,4 +62,20 @@ public class LoginServiceImpl implements ILoginService {
 
         loginMapper.insertUserInfo(userInfor);
     }
+
+
+    /**
+     * 功能描述: <br> 通过手机账号修改密码
+     * 〈〉
+     *
+     * @Param: [loginName]
+     * @Return: void
+     * @Author: 韩以虎
+     * @Date: 2019/12/23 12:52
+     */
+    @Override
+    public void updatePasswordByLoginName(String loginName, String password) {
+        loginMapper.updatePasswordByLoginName(loginName, password);
+
+    }
 }

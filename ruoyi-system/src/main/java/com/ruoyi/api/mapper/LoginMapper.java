@@ -16,4 +16,6 @@ public interface LoginMapper {
     SysUser getUserInfor(@Param("loginName") String loginName);
 
     void insertUserInfo(SysUser userInfor);
+
+    void updatePasswordByLoginName(@Param("loginName") String loginName, @Param("password") String password);
 }

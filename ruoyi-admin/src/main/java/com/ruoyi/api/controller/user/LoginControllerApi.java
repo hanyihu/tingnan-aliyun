@@ -119,5 +119,39 @@ public class LoginControllerApi extends BaseController {
         return AjaxResult.error("该手机号已注册,请直接登录！");
     }
 
+
+    /**
+     * 功能描述: <br>  忘记密码
+     * 〈〉
+     *
+     * @Param: [mobile, password]
+     * @Return: com.ruoyi.common.core.domain.AjaxResult
+     * @Author: 韩以虎
+     * @Date: 2019/12/23 12:43
+     */
+    @ApiOperation(value = "忘记密码", notes = " mobile:手机号 ；password:密码 ", produces = "application/json")
+    @PostMapping("/forgetPassword")
+    public AjaxResult forgetPassword(String mobile, String password) {
+        logger.info("mobile==={}---------------password===={}", mobile, password);
+
+        //通过手机号查找是否有该用户、
+        SysUser userInfor = loginService.getUserInfor(mobile);
+        if (userInfor == null) {
+            return AjaxResult.error("该账号不存在！");
+        }
+        if (userInfor != null) {
+
+            //对接受到的用户密码进行加密
+            String password1 = passwordService.encryptPassword(mobile, password, "111111");
+
+            loginService.updatePasswordByLoginName(mobile, password1);
+            return AjaxResult.success("修改密码成功！");
+        }
+
+        return AjaxResult.error("修改密码失败！");
+
+    }
+
+
 }
 

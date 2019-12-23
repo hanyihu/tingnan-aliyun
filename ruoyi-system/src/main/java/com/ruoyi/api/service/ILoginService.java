@@ -25,6 +25,11 @@ public interface ILoginService {
      * 注册用户信息
      * */
     void insertUserInfo(SysUser userInfor);
+
+    /**
+     * 通过账号修改密码
+     */
+    void updatePasswordByLoginName(String mobile, String password);
 }
 
 
