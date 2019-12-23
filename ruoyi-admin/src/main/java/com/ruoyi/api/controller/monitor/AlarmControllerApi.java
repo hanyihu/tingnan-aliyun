@@ -36,7 +36,6 @@ public class AlarmControllerApi extends BaseController {
 
     @Autowired
     private IAlarmService alarmService;
-
     /**
      * 功能描述: <br> 告警统计
      * 〈〉
