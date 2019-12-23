@@ -57,6 +57,7 @@ public class AlarmControllerApi extends BaseController {
         //  数据表 v_alarmhis
         return AjaxResult.error();
 
+
     }
 
     @ApiOperation(value = "历史告警", notes = "", produces = "application/josn")
