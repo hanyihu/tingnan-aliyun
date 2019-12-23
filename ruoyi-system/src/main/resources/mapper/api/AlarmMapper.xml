@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.api.mapper.AlarmMapper">
+    
+
+    <sql id="VLiveVo">
+       TagName as tagName,
+       TagType as tagType,
+       DataType as dataType,
+       Unit as unit,
+       SystemType as systemType,
+       RangMin as rangMin,
+       RangMax as rangMax,
+       LowAlarm as lowAlarm,
+       AlarmStatus as alarmStatus,
+       TagKey as tagKey,
+       VALUE as value,
+       TIMESTAMP as timestamp,
+       SendSms as sendSms,
+       DealAlarm as dealAlarm,
+       DigCount as digCount,
+       ValueType as valueType
+    </sql>
+
+    <sql id="VAlarmhisVo">
+       TagName as tagName,
+       TagType as tagType,
+       TagDesc as tagDesc,
+       DataType as dataType,
+       Unit as unit,
+       SystemType as systemType,
+       RangMin as rangMin,
+       RangMax as rangMax,
+       LowAlarm as lowAlarm,
+       TagKey as tagKey,
+       StartValue as startValue,
+       AvgValue as avgValue,
+       EndValue as endValue,
+       MAXVALUE as maxValue,
+       Duration as duration,
+       StartTime as startTime,
+       EndTime as endTime,
+       CreateTime as createTime,
+       ID as id
+    </sql>
+
+    <sql id="VAlarmRealVo">
+       ID as id,
+       TagKey as tagKey,
+       LowAlarm as lowAlarm,
+       StartValue as startValue,
+       EndValue as endValue,
+       AvgValue as avgValue,
+       MaxValue as maxValue,
+       Duration as duration,
+       StartTime as startTime,
+       EndTime as endTime,
+       TagName as tagName,
+       TagDesc as tagDesc,
+       TagType as tagType,
+       DataType as dataType,
+       Unit as unit,
+       SystemType as systemType,
+       RangMin as rangMin,
+       RangMax as rangMax
+
+    </sql>
+
+
+
+    <select id="getRealData" resultType="com.ruoyi.system.domain.VLive">
+     select
+      <include refid="VLiveVo"></include>
+        from V_Live
+
+    <where>
+    <if test="systemType != null and systemType != ''">
+            AND SystemType = #{systemType}
+        </if>
+    </where>
+
+
+    </select>
+
+    <!--告警统计-->
+    <select id="getAlarmCountByDay" resultType="com.ruoyi.system.domain.VAlarmhis">
+
+        select
+        <include refid="VAlarmhisVo"></include>
+        from V_AlarmHis
+        <where>
+            <if test="startTime != null and startTime != ''">
+                AND  convert(varchar(7),StartTime,120) = #{startTime}
+            </if>
+        </where>
+
+
+    </select>
+
+    <!--历史告警-->
+    <select id="getAlarmHis" resultType="com.ruoyi.system.domain.VAlarmhis">
+
+        select
+        <include refid="VAlarmhisVo"></include>
+       from V_AlarmHis
+        <where>
+            <if test="startTime != null and startTime != ''">
+                AND  convert(varchar(7),StartTime,120) = #{startTime}
+            </if>
+        </where>
+
+
+
+    </select>
+
+    <!--历史告警-数据曲线-历史数据-->
+    <select id="getAlarmInfo" resultType="com.ruoyi.system.domain.VAlarmhis">
+        select
+        <include refid="VAlarmhisVo"></include>
+        from V_AlarmHis
+        <where>
+            <if test="id != null and id != ''">
+                AND ID = #{id}
+            </if>
+        </where>
+
+    </select>
+
+    <!--历史告警-数据曲线-实时数据-->
+    <select id="getAlarmReal" resultType="com.ruoyi.system.domain.VAlarmReal">
+
+        select
+        <include refid="VAlarmRealVo"></include>
+        from V_AlarmReal
+        <where>
+            <if test="id != null and id != ''">
+                AND ID = #{id}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

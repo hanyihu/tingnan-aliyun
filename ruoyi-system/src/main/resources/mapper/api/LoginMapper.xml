@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.api.mapper.LoginMapper">
+    
+
+    <sql id="SysUserVo">
+       user_id as userId,
+       dept_id as deptId,
+       login_name as loginName,
+       user_name as userName,
+       email as email,
+       phonenumber as phonenumber,
+       sex as sex,
+       avatar as avatar,
+       password as password,
+       salt as salt,
+       status as status,
+       del_flag as delFlag,
+       login_ip as loginIp,
+       login_date as loginDate,
+       create_time as createTime
+    </sql>
+
+    <!--注册用户信息-->
+    <insert id="insertUserInfo" parameterType="com.ruoyi.system.domain.SysUser">
+        insert into sys_user(login_name,user_name,password,salt)
+        values (#{loginName},#{userName},#{password},#{salt})
+
+    </insert>
+
+    <!-- 验证登录用户 -->
+    <select id="login" resultType="com.ruoyi.system.domain.SysUser">
+      select
+       <include refid="SysUserVo"/>
+      from sys_user
+      <where>
+          <if test="loginName != null and loginName != ''">
+              login_name = #{loginName}
+          </if>
+          <if test="password != null and password != ''">
+            and  password = #{password}
+          </if>
+
+      </where>
+
+    </select>
+
+    <!--根据用户账号获取用户信息-->
+   <select id="getUserInfor" resultType="com.ruoyi.system.domain.SysUser">
+       select
+       <include refid="SysUserVo"/>
+       from sys_user
+       <where>
+           <if test="loginName != null and loginName != ''">
+               login_name = #{loginName}
+           </if>
+
+       </where>
+   </select>
+
+    
+</mapper>

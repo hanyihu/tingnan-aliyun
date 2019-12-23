@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.api.mapper.UserMapper">
+    
+
+    <sql id="SysUserVo">
+       user_id as userId,
+       dept_id as deptId,
+       login_name as loginName,
+       user_name as userName,
+       email as email,
+       phonenumber as phonenumber,
+       sex as sex,
+       avatar as avatar,
+       password as password,
+       salt as salt,
+       status as status,
+       del_flag as delFlag,
+       login_ip as loginIp,
+       login_date as loginDate,
+       create_time as createTime
+    </sql>
+    
+
+
+    <!--根据用户账号获取用户信息-->
+   <select id="getUserInforById" resultType="com.ruoyi.system.domain.SysUser">
+       select
+       <include refid="SysUserVo"/>
+       from sys_user
+       <where>
+           <if test="userId != null and userId != ''">
+               user_id = #{userId}
+           </if>
+
+       </where>
+   </select>
+
+
+    <!--修改用户密码-->
+    <update id="updatePassWord" >
+        update sys_user
+         <set>
+             <if test="newPassword != null and newPassword != '' ">password = #{newPassword}</if>
+         </set>
+         where user_id = #{userId}
+    </update>
+
+    <!--修改用户头像-->
+    <update id="uploadImg">
+          update sys_user
+          <set>
+              <if test="imgData != null and imgData != '' "> avatar = #{imgData}</if>
+          </set>
+         where user_id = #{userId}
+    </update>
+
+    <!--保存设置修改-->
+    <update id="saveSetting">
+        update sys_user
+        <set>
+            <if test="userName != null and userName != '' "> user_name = #{userName},</if>
+            <if test="userAvatar != null and userAvatar != '' "> avatar = #{userAvatar}</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+</mapper>
