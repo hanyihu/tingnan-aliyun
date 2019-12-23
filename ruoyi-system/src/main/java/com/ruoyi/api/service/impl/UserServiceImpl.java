@@ -53,4 +53,9 @@ public class UserServiceImpl implements IUserService {
     public int saveSetting(String userId, String userName, String  userAvatar) {
         return userMapper.saveSetting(userId,userName,userAvatar);
     }
+
+    @Override
+    public void updateMobileById(String userId, String loginName) {
+        userMapper.updateMobileById(userId, loginName);
+    }
 }

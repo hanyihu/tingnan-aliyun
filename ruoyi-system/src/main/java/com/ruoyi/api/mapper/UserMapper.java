@@ -17,4 +17,6 @@ public interface UserMapper {
     int uploadImg(@Param("userId") String userId, @Param("imgData") String imgData);
 
     int saveSetting(@Param("userId") String userId, @Param("userName") String userName, @Param("userAvatar") String userAvatar);
+
+    void updateMobileById(@Param("userId") String userId, @Param("loginName") String loginName);
 }

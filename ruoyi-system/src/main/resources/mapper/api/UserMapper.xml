@@ -67,4 +67,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where user_id = #{userId}
     </update>
 
+    <!--通过id修改手机号-->
+    <update id="updateMobileById">
+        update sys_user
+        <set>
+            <if test="loginName != null and loginName != '' ">login_name = #{loginName}</if>
+
+        </set>
+        where user_id = #{userId}
+    </update>
+
 </mapper>

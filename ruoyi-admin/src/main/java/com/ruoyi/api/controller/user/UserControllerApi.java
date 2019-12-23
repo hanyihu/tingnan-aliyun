@@ -1,5 +1,6 @@
 package com.ruoyi.api.controller.user;
 
+import com.ruoyi.api.service.ILoginService;
 import com.ruoyi.api.service.IUserService;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -40,6 +41,9 @@ public class UserControllerApi extends BaseController {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private ILoginService loginService;
     /**
      * 功能描述: <br> 获取我的信息
      * 〈〉
@@ -63,27 +67,24 @@ public class UserControllerApi extends BaseController {
         return AjaxResult.error();
     }
 
-    /**
-     * 功能描述: <br> 退出当前账号
-     * 〈〉
-     * @Param: [token]
-     * @Return: com.ruoyi.common.core.domain.AjaxResult
-     * @Author: 韩以虎
-     * @Date: 2019/11/12 9:11
-     */
-    @ApiOperation(value = "退出当前账号", notes = "token:用户令牌token", produces = "application/json")
-    @PostMapping("/logout")
-    public AjaxResult logout(String userId){
-        logger.info("userId=={}",userId);
-        //SysUser sysUser = (SysUser) redisUtil.get(userId);
-        SysUser sysUser = iUserService.getUserInforById(userId);
-        if(null != sysUser){
-            //注销token
-           // redisUtil.del(token);
-            return AjaxResult.success();
+
+    @ApiOperation(value = "我的--设置--修改手机号", notes = "userId:userId , oldMobile:旧手机号, mobile:新手机号", produces = "application/josn")
+    @PostMapping("/updateMobile")
+    public AjaxResult updateMobile(String userId, String oldMobile, String mobile) {
+
+        //查找手机号是否存在
+        SysUser userInfor = loginService.getUserInfor(oldMobile);
+        if (userInfor == null) {
+            return AjaxResult.error("该手机号不存在！");
+
+        } else if (userInfor.getUserId() != Long.parseLong(userId)) {
+            return AjaxResult.error("用户令牌不一致,请核对！");
+        } else {
+            iUserService.updateMobileById(userId, mobile);
+            return AjaxResult.success("手机号修改成功！");
         }
 
-        return AjaxResult.error();
+
     }
 
 
@@ -97,9 +98,11 @@ public class UserControllerApi extends BaseController {
      */
     @ApiOperation(value = "修改用户密码" , notes = "token:用户令牌；oldPassword:旧密码 ； newPassword:新密码  " ,produces = "application/json")
     @PostMapping(value = "/updatePassword")
-    public AjaxResult updatePassword(String token, String oldPassword, String newPassword){
+    public AjaxResult updatePassword(String userId, String oldPassword, String newPassword) {
 
-        SysUser sysUser = (SysUser)redisUtil.get(token);
+        //SysUser sysUser = (SysUser)redisUtil.get(token);
+        SysUser sysUser = iUserService.getUserInforById(userId);
+
         if(null != sysUser){
             //对接受到的用户密码进行加密
             String encryptPassword = passwordService.encryptPassword(sysUser.getLoginName(), oldPassword, sysUser.getSalt());
@@ -135,7 +138,7 @@ public class UserControllerApi extends BaseController {
      */
     @ApiOperation(value = "修改并上传头像", notes = " imgDatas:头像地址", produces = "application/json")
     @PostMapping("/uploadImg")
-    @ResponseBody
+
     public AjaxResult uploadImg(String imgDatas){
         logger.info("前端传来的imgDatas地址=={}",imgDatas);
 
@@ -143,8 +146,6 @@ public class UserControllerApi extends BaseController {
         logger.info("头像存放路径=={}",userAvatar);
 
         return AjaxResult.success(userAvatar);
-
-
     }
 
     /**
@@ -155,23 +156,48 @@ public class UserControllerApi extends BaseController {
      * @Author: 韩以虎
      * @Date: 2019/11/13 8:52
      */
-    @ApiOperation(value = "保存设置修改", notes = "token:用户令牌token ； userName:用户名称 ；userAvatar:用户头像 ", produces = "application/json")
+    @ApiOperation(value = "保存设置修改", notes = "userId:用户令牌userId ； userName:用户名称 ；userAvatar:用户头像 ", produces = "application/json")
     @PostMapping("/saveSetting")
-    public AjaxResult saveSetting(String token, String userName, String userAvatar){
+    public AjaxResult saveSetting(String userId, String userName, String userAvatar) {
 
         logger.info("前端传来的用户名=={}",userName);
         logger.info("前端传来的用户头像地址=={}",userAvatar);
-        SysUser sysUser = (SysUser) redisUtil.get(token);
+        // SysUser sysUser = (SysUser) redisUtil.get(token);
+        SysUser sysUser = iUserService.getUserInforById(userId);
+
         if(null != sysUser){
             int i=  iUserService.saveSetting(String.valueOf(sysUser.getUserId()),userName,userAvatar);
             if(i>0){
                 return AjaxResult.success();
             }
         }
-        return AjaxResult.error();
+        return AjaxResult.error("保存失败！");
     }
 
 
+    /**
+     * 功能描述: <br> 退出当前账号
+     * 〈〉
+     *
+     * @Param: [token]
+     * @Return: com.ruoyi.common.core.domain.AjaxResult
+     * @Author: 韩以虎
+     * @Date: 2019/11/12 9:11
+     */
+    @ApiOperation(value = "退出当前账号", notes = "token:用户令牌token", produces = "application/json")
+    @PostMapping("/logout")
+    public AjaxResult logout(String userId) {
+        logger.info("userId=={}", userId);
+        //SysUser sysUser = (SysUser) redisUtil.get(userId);
+        SysUser sysUser = iUserService.getUserInforById(userId);
+        if (null != sysUser) {
+            //注销token
+            // redisUtil.del(token);
+            return AjaxResult.success();
+        }
+
+        return AjaxResult.error();
+    }
 
 
     /**
@@ -225,12 +251,18 @@ public class UserControllerApi extends BaseController {
 
         //当前项目下路径
         File file = new File("");
-        String filePath = null;
+        // String filePath = null;
         String path = null;
         try {
-            filePath = file.getCanonicalPath();
+            // filePath= file.getCanonicalPath();
             //创建目录
-            path=filePath+"\\fileUpload\\headImg";
+            //把图片放到阿里云远程服务器中
+            // path=filePath+"\\fileUpload\\headImg";
+
+            //获取tomcat路径，把图片放入tomcat路径下
+            String property = System.getProperty("catalina.home");
+            logger.info("tomcat根目录为===={}", property);
+            path = property + "\\webapps\\ROOT\\tn-image";
             file = new File(path);
             //如果目录不存在 则创建
             if(!file.exists()&&!file.isDirectory()){
@@ -238,7 +270,7 @@ public class UserControllerApi extends BaseController {
             }
 
             return path;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

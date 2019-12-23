@@ -32,6 +32,11 @@ public interface IUserService {
      * 保存设置修改
      */
     int saveSetting(String userId, String userName, String userAvatar);
+
+    /**
+     * 修改手机号
+     */
+    void updateMobileById(String userId, String loginName);
 }
 
 
