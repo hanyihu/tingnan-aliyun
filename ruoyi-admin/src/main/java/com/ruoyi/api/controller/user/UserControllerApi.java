@@ -202,10 +202,10 @@ public class UserControllerApi extends BaseController {
     public AjaxResult getAppVersion(String version, String client) {
         logger.info("version===={}------client======{}", version, client);
         AppInfo appInfo = iUserService.getAppInfoById();
-        logger.info("version==appInfo.getVersion()===={}", version == appInfo.getVersion());
-        if (version == appInfo.getVersion()) {
+        logger.info("version==appInfo.getVersion()===={}", version.equals(appInfo.getVersion()));
+        if (version.equals(appInfo.getVersion())) {
 
-            return AjaxResult.error();
+            return AjaxResult.error("未发现新版本！");
         }
         return AjaxResult.success(appInfo);
     }

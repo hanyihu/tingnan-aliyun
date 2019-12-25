@@ -8,7 +8,7 @@ spring:
             master:
                 url: jdbc:sqlserver://localhost:1433;SelectMethod=cursor;DatabaseName=ry
                 username: sa
-                password: 123456
+                password: sa@123
             # 从库数据源
             slave:
 
@@ -16,7 +16,7 @@ spring:
                 enabled: true
                 url: jdbc:sqlserver://localhost:1433;SelectMethod=cursor;DatabaseName=GZSCADA
                 username: sa
-                password: 123456
+                password: sa@123
             # 初始连接数
             initialSize: 5
             # 最小连接池数量
