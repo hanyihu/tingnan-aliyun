@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.api.mapper.AlarmMapper">
-    
+
 
     <sql id="VLiveVo">
        TagName as tagName,
@@ -68,7 +68,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </sql>
 
+    <sql id="InfoEventVo">
+		id_ as id ,
+		time_ as times ,
+		systype as systype ,
+		tagname as tagname ,
+		tagkey as tagkey ,
+		Device as device ,
+		SubDevice as subDevice ,
+		addr_ as addr ,
+		val_ as val ,
+		info_ as info,
+		event_ as event ,
+		class_ as classs ,
+		user_ as users ,
+		res_ as res ,
+		varinfo_ as varinfo ,
+		confirm_ as confirm ,
+		cuser_ as cuser ,
+		ctime_ as ctime
 
+	</sql>
 
     <select id="getRealData" resultType="com.ruoyi.system.domain.VLive">
      select
@@ -100,18 +120,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <!--历史告警-->
-    <select id="getAlarmHis" resultType="com.ruoyi.system.domain.VAlarmhis">
-
+    <select id="getAlarmHis" resultType="com.ruoyi.system.domain.InfoEvent">
         select
-        <include refid="VAlarmhisVo"></include>
-       from V_AlarmHis
+        <include refid="InfoEventVo"></include>
+        from info_event
         <where>
             <if test="startTime != null and startTime != ''">
-                AND  convert(varchar(7),StartTime,120) = #{startTime}
+                and Convert(varchar(10),[time_],120) = Convert(varchar(10),#{startTime},120)
             </if>
+            <if test="info != null and info != ''">
+                AND info_ like '%'+#{info}+ '%'
+            </if>
+
         </where>
 
-
+        order by time_ desc
 
     </select>
 
@@ -129,16 +152,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <!--历史告警-数据曲线-实时数据-->
-    <select id="getAlarmReal" resultType="com.ruoyi.system.domain.VAlarmReal">
+    <select id="getAlarmReal" resultType="com.ruoyi.system.domain.InfoEvent">
 
         select
-        <include refid="VAlarmRealVo"></include>
-        from V_AlarmReal
+        <include refid="InfoEventVo"></include>
+        from info_event
         <where>
             <if test="id != null and id != ''">
-                AND ID = #{id}
+                AND id_ = #{id}
             </if>
         </where>
+    </select>
+
+    <!--告警数据InfoEvent-->
+    <select id="getInfoEvent" resultType="com.ruoyi.system.domain.InfoEvent">
+        select
+        <include refid="InfoEventVo"/>
+        from info_event
+        where event_ = 1
+        order by time_ desc
     </select>
 
 

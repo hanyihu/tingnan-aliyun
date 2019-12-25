@@ -2,6 +2,7 @@ package com.ruoyi.api.service.impl;
 
 import com.ruoyi.api.mapper.UserMapper;
 import com.ruoyi.api.service.IUserService;
+import com.ruoyi.system.domain.AppInfo;
 import com.ruoyi.system.domain.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,5 +58,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void updateMobileById(String userId, String loginName) {
         userMapper.updateMobileById(userId, loginName);
+    }
+
+    @Override
+    public AppInfo getAppInfoById() {
+        return userMapper.getAppInfoById();
     }
 }

@@ -7,6 +7,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.redisManager.RedisUtil;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
+import com.ruoyi.system.domain.AppInfo;
 import com.ruoyi.system.domain.SysUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -172,6 +173,41 @@ public class UserControllerApi extends BaseController {
             }
         }
         return AjaxResult.error("保存失败！");
+    }
+
+
+    @ApiOperation(value = "获取版本信息", notes = "userId:用户令牌userId ；  ", produces = "application/json")
+    @PostMapping("/getAppInfor")
+    public AjaxResult getAppInfor(String userId) {
+
+        logger.info("前端传来的userId=={}", userId);
+        SysUser sysUser = iUserService.getUserInforById(userId);
+        if (null != sysUser) {
+
+            AppInfo appInfo = iUserService.getAppInfoById();
+
+            if (appInfo != null) {
+                return AjaxResult.success(appInfo);
+
+            }
+
+        }
+
+        return AjaxResult.error();
+    }
+
+
+    @ApiOperation(value = "获取版本号", notes = "userId:用户令牌userId ；  ", produces = "application/json")
+    @PostMapping("/getAppVersion")
+    public AjaxResult getAppVersion(String version, String client) {
+        logger.info("version===={}------client======{}", version, client);
+        AppInfo appInfo = iUserService.getAppInfoById();
+        logger.info("version==appInfo.getVersion()===={}", version == appInfo.getVersion());
+        if (version == appInfo.getVersion()) {
+
+            return AjaxResult.error();
+        }
+        return AjaxResult.success(appInfo);
     }
 
 

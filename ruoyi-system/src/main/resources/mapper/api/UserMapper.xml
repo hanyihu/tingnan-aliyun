@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <sql id="SysUserVo">
        user_id as userId,
        dept_id as deptId,
+       app_id as appId,
        login_name as loginName,
        user_name as userName,
        email as email,
@@ -22,7 +23,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        login_date as loginDate,
        create_time as createTime
     </sql>
-    
+
+    <sql id="AppInfoVo">
+        app_id as appId ,
+        url as url ,
+        version as version ,
+        remark as remark ,
+        create_time as createTime
+
+    </sql>
 
 
     <!--根据用户账号获取用户信息-->
@@ -37,6 +46,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
        </where>
    </select>
+
+    <!--获取手机版本信息-->
+    <select id="getAppInfoById" resultType="com.ruoyi.system.domain.AppInfo">
+        select
+        <include refid="AppInfoVo"></include>
+        from app_info
+
+    </select>
 
 
     <!--修改用户密码-->

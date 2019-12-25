@@ -10,6 +10,7 @@ import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.DataSourceType;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.domain.InfoEvent;
 import com.ruoyi.system.domain.VAlarmReal;
 import com.ruoyi.system.domain.VAlarmhis;
 import com.ruoyi.system.domain.VLive;
@@ -60,22 +61,22 @@ public class AlarmControllerApi extends BaseController {
 
     @ApiOperation(value = "历史告警", notes = "", produces = "application/josn")
     @PostMapping("/getAlarmHis")
-   public PageInfo<VAlarmhis> getAlarmHis(String date,String pageindex,String pagesize){
-        //  数据表 v_alarmhis
+    public PageInfo<InfoEvent> getAlarmHis(String date, String pageindex) {
+
         //由字符串日期转化为date类型的日期
-       // Date parseDate = DateUtils.parseDate(date);
+        //  Date parseDate = DateUtils.parseDate(date);
 
         logger.info("历史告警记录前一段传来的日期==={}",date);
         logger.info("历史告警记录前一段传来的页数==={}",pageindex);
-        PageHelper.startPage(Integer.parseInt(pageindex),Integer.parseInt(pagesize));
-        List<VAlarmhis> list= alarmService.getAlarmHis(date);
-         PageInfo<VAlarmhis> pageInfo = new PageInfo<>(list);
+        PageHelper.startPage(Integer.parseInt(pageindex), 7);
+        List<InfoEvent> list = alarmService.getAlarmHis(date, "解除");
+        PageInfo<InfoEvent> pageInfo = new PageInfo<>(list);
         return  pageInfo;
    }
 
     /**
      * 功能描述: <br>
-     * 〈〉  历史告警--告警信息详情
+     * 〈〉  告警--告警信息详情
      * @Param: [id, type]
      * @Return: com.ruoyi.common.core.domain.AjaxResult
      * @Author: 韩以虎
@@ -83,33 +84,12 @@ public class AlarmControllerApi extends BaseController {
      */
     @ApiOperation(value = "告警信息详情", notes = "", produces = "application/josn")
     @PostMapping("/getAlarmInfo")
-    public AjaxResult getAlarmInfo(String id,String type){
+    public AjaxResult getAlarmInfo(String id) {
 
-    if(type.equals(0)){
-       VAlarmReal data= alarmService.getAlarmReal(id);
-        return AjaxResult.success(data) ;
-    }else{
-        VAlarmhis data =alarmService.getAlarmInfo(id);
+
+        InfoEvent data = alarmService.getAlarmReal(id);
 
        return AjaxResult.success(data) ;
-    }
-
-
-
-       /*
-       *
-       *  string sql = "";
-            if(type=="0")
-            {
-                sql = "select * from V_AlarmReal where id="+id;
-            }
-            else
-            {
-                sql = "select * from V_AlarmHis where id=" + id;
-            }
-            return this.BaseRepository().FindList(sql).First();
-       * */
-
 
     }
 
@@ -169,21 +149,26 @@ public class AlarmControllerApi extends BaseController {
 
     @ApiOperation(value = "实时告警列表", notes = "", produces = "application/josn")
     @PostMapping("/getAlarmList")
-    public AjaxResult getAlarmList(String queryJson, String pageindex){
-        /*未找到*/
-        return AjaxResult.error();
+    public PageInfo<InfoEvent> getAlarmList(String pageindex) {
+
+        logger.info("获取的页数数据=={}==={}", pageindex);
+        //  startPage();
+        PageHelper.startPage(Integer.parseInt(pageindex), 9);
+        List<InfoEvent> infoEvents = alarmService.getInfoEvent();
+        PageInfo<InfoEvent> pageInfo = new PageInfo<InfoEvent>(infoEvents);
+        return pageInfo;
     }
 
 
     @ApiOperation(value = "实时数据列表", notes = "", produces = "application/josn")
     @PostMapping("/getRealData")
-    public PageInfo<VLive> getRealData(String queryJson, String pageindex ,String pagesize){
+    public PageInfo<VLive> getRealData(String queryJson, String pageindex) {
       /* PageDomain pageDomain = new PageDomain();
        pageDomain.setPageNum(Integer.valueOf(pageindex));*/
         logger.info("获取的queryJson数据=={}",queryJson);
         logger.info("获取的页数数据=={}==={}",pageindex,queryJson);
        //  startPage();
-        PageHelper.startPage(Integer.parseInt(pageindex),Integer.parseInt(pagesize));
+        PageHelper.startPage(Integer.parseInt(pageindex), 7);
       List<VLive > vLive= alarmService.getRealData(queryJson);
         PageInfo<VLive> pageInfo = new PageInfo<VLive>(vLive);
         return pageInfo;

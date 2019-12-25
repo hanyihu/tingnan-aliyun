@@ -1,5 +1,6 @@
 package com.ruoyi.api.mapper;
 
+import com.ruoyi.system.domain.AppInfo;
 import com.ruoyi.system.domain.SysUser;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,4 +20,6 @@ public interface UserMapper {
     int saveSetting(@Param("userId") String userId, @Param("userName") String userName, @Param("userAvatar") String userAvatar);
 
     void updateMobileById(@Param("userId") String userId, @Param("loginName") String loginName);
+
+    AppInfo getAppInfoById();
 }

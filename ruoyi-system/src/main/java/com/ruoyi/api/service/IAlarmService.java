@@ -1,10 +1,12 @@
 package com.ruoyi.api.service;
 
+import com.ruoyi.system.domain.InfoEvent;
 import com.ruoyi.system.domain.VAlarmReal;
 import com.ruoyi.system.domain.VAlarmhis;
 import com.ruoyi.system.domain.VLive;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,11 +22,13 @@ public interface IAlarmService {
 
     List<VAlarmhis> getAlarmCountByDay(String date);
 
-    List<VAlarmhis> getAlarmHis(String date);
+    List<InfoEvent> getAlarmHis(String date, String info);
 
     VAlarmhis getAlarmInfo(String id);
 
-    VAlarmReal getAlarmReal(String id);
+    InfoEvent getAlarmReal(String id);
+
+    List<InfoEvent> getInfoEvent();
 }
 
 

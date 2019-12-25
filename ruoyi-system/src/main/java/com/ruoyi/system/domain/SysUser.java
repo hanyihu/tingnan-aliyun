@@ -34,6 +34,11 @@ public class SysUser extends BaseEntity
     /** 角色ID */
     private Long roleId;
 
+    /**
+     * appid
+     */
+    private String AppId;
+
     /** 登录名称 */
     @Excel(name = "登录名称")
     private String loginName;
@@ -318,9 +323,16 @@ public class SysUser extends BaseEntity
         return postIds;
     }
 
-    public void setPostIds(Long[] postIds)
-    {
+    public void setPostIds(Long[] postIds) {
         this.postIds = postIds;
+    }
+
+    public String getAppId() {
+        return AppId;
+    }
+
+    public void setAppId(String appId) {
+        AppId = appId;
     }
 
     @Override
@@ -328,6 +340,7 @@ public class SysUser extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("userId", getUserId())
             .append("deptId", getDeptId())
+                .append("appId", getAppId())
             .append("loginName", getLoginName())
             .append("userName", getUserName())
             .append("email", getEmail())

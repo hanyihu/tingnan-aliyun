@@ -1,5 +1,6 @@
 package com.ruoyi.api.service;
 
+import com.ruoyi.system.domain.AppInfo;
 import com.ruoyi.system.domain.SysUser;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,8 @@ public interface IUserService {
      * 修改手机号
      */
     void updateMobileById(String userId, String loginName);
+
+    AppInfo getAppInfoById();
 }
 
 

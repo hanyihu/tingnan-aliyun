@@ -1,10 +1,12 @@
 package com.ruoyi.api.mapper;
 
+import com.ruoyi.system.domain.InfoEvent;
 import com.ruoyi.system.domain.VAlarmReal;
 import com.ruoyi.system.domain.VAlarmhis;
 import com.ruoyi.system.domain.VLive;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,9 +22,11 @@ public interface AlarmMapper {
 
     List<VAlarmhis> getAlarmCountByDay(@Param("startTime") String date);
 
-    List<VAlarmhis> getAlarmHis(@Param("startTime") String date);
+    List<InfoEvent> getAlarmHis(@Param("startTime") String date, @Param("info") String info);
 
     VAlarmhis getAlarmInfo(@Param("id") String id);
 
-    VAlarmReal getAlarmReal(@Param("id")String id);
+    InfoEvent getAlarmReal(@Param("id") String id);
+
+    List<InfoEvent> getInfoEvent();
 }
