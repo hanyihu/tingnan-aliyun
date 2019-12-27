@@ -30,6 +30,11 @@ public interface ILoginService {
      * 通过账号修改密码
      */
     void updatePasswordByLoginName(String mobile, String password);
+
+    /**
+     * 修改cId
+     */
+    void updatecId(String cId, String userId);
 }
 
 

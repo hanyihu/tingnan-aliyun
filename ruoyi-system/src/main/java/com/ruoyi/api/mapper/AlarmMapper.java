@@ -1,9 +1,6 @@
 package com.ruoyi.api.mapper;
 
-import com.ruoyi.system.domain.InfoEvent;
-import com.ruoyi.system.domain.VAlarmReal;
-import com.ruoyi.system.domain.VAlarmhis;
-import com.ruoyi.system.domain.VLive;
+import com.ruoyi.system.domain.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -29,4 +26,8 @@ public interface AlarmMapper {
     InfoEvent getAlarmReal(@Param("id") String id);
 
     List<InfoEvent> getInfoEvent();
+
+    int getInfoEventCount();
+
+    void updateInfoEventCount(@Param("newCount") int newCount);
 }

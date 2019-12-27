@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <sql id="SysUserVo">
        user_id as userId,
        dept_id as deptId,
+       cid as cId,
        login_name as loginName,
        user_name as userName,
        email as email,
@@ -33,6 +34,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!--通过登录张号修改密码-->
     <update id="updatePasswordByLoginName">
         update sys_user set password = #{password} where login_name = #{loginName}
+    </update>
+
+    <update id="updatecId">
+         update sys_user set cid = #{cId} where user_id = #{userId}
     </update>
 
     <!-- 验证登录用户 -->

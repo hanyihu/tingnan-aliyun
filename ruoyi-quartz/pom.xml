@@ -35,6 +35,24 @@
             <artifactId>ruoyi-common</artifactId>
         </dependency>
 
-    </dependencies>
-	
+		<!--个推-->
+		<dependency>
+			<groupId>com.gexin.platform</groupId>
+			<artifactId>gexin-rp-sdk-http</artifactId>
+			<version>4.1.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ruoyi</groupId>
+			<artifactId>ruoyi-system</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>getui-nexus</id>
+			<url>http://mvn.gt.igexin.com/nexus/content/repositories/releases/</url>
+		</repository>
+	</repositories>
+
 </project>

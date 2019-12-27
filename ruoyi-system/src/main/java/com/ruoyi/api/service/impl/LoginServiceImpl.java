@@ -78,4 +78,9 @@ public class LoginServiceImpl implements ILoginService {
         loginMapper.updatePasswordByLoginName(loginName, password);
 
     }
+
+    @Override
+    public void updatecId(String cId, String userId) {
+        loginMapper.updatecId(cId, userId);
+    }
 }

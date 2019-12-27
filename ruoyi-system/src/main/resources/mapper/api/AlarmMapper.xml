@@ -90,6 +90,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	</sql>
 
+    <!--更新阿里云info_event_count告警数量-->
+    <update id="updateInfoEventCount">
+        update info_event_count set counts = #{newCount} where 1 = 1
+
+    </update>
+
     <select id="getRealData" resultType="com.ruoyi.system.domain.VLive">
      select
       <include refid="VLiveVo"></include>
@@ -171,6 +177,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from info_event
         where event_ = 1
         order by time_ desc
+    </select>
+
+    <select id="getInfoEventCount" resultType="java.lang.Integer">
+        select counts from info_event_count
     </select>
 
 

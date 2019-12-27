@@ -35,6 +35,12 @@ public class SysUser extends BaseEntity
     private Long roleId;
 
     /**
+     * 用于个推的cId
+     */
+    private String cId;
+
+
+    /**
      * appid
      */
     private String AppId;
@@ -333,6 +339,15 @@ public class SysUser extends BaseEntity
 
     public void setAppId(String appId) {
         AppId = appId;
+    }
+
+
+    public String getcId() {
+        return cId;
+    }
+
+    public void setcId(String cId) {
+        this.cId = cId;
     }
 
     @Override

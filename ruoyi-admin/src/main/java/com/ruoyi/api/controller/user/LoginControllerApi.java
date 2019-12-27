@@ -46,10 +46,8 @@ public class LoginControllerApi extends BaseController {
      */
     @ApiOperation(value = "登录验证", notes = "loginName:用户登录账号,password：用户登录密码", produces = "application/josn")
     @PostMapping("")
-    public AjaxResult login(String loginName, String password) {
-
-        //用户登录时进行token验证，是否存在 若存在，注销token
-        //redisUtil.get("")
+    public AjaxResult login(String loginName, String password, String cId) {
+        logger.info("cid======{}", cId);
 
          if((loginName != null || loginName != "") && (password != null || password != "")){
              //根据用户登录中账号取出用户信息
@@ -63,7 +61,11 @@ public class LoginControllerApi extends BaseController {
 
              //判断用户登录账号和密码是否相同
              if(loginName.equals(sysUser.getLoginName()) && passwordRevice.equals(sysUser.getPassword())){
+
+                 //吧cId存入到数据库中
+
                  String  userId = sysUser.getUserId().toString();
+                 loginService.updatecId(cId, userId);
 
                  /* RedisTokenManager redisTokenManager  = new RedisTokenManager();
 

@@ -2,10 +2,7 @@ package com.ruoyi.api.service.impl;
 
 import com.ruoyi.api.mapper.AlarmMapper;
 import com.ruoyi.api.service.IAlarmService;
-import com.ruoyi.system.domain.InfoEvent;
-import com.ruoyi.system.domain.VAlarmReal;
-import com.ruoyi.system.domain.VAlarmhis;
-import com.ruoyi.system.domain.VLive;
+import com.ruoyi.system.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +50,15 @@ public class AlarmServiceImpl implements IAlarmService {
     @Override
     public List<InfoEvent> getInfoEvent() {
         return alarmMapper.getInfoEvent();
+    }
+
+    @Override
+    public Integer getInfoEventCount() {
+        return alarmMapper.getInfoEventCount();
+    }
+
+    @Override
+    public void updateInfoEventCount(int newCount) {
+        alarmMapper.updateInfoEventCount(newCount);
     }
 }

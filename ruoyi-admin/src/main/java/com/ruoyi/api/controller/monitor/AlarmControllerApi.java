@@ -153,7 +153,7 @@ public class AlarmControllerApi extends BaseController {
 
         logger.info("获取的页数数据=={}==={}", pageindex);
         //  startPage();
-        PageHelper.startPage(Integer.parseInt(pageindex), 9);
+        PageHelper.startPage(Integer.parseInt(pageindex), 7);
         List<InfoEvent> infoEvents = alarmService.getInfoEvent();
         PageInfo<InfoEvent> pageInfo = new PageInfo<InfoEvent>(infoEvents);
         return pageInfo;

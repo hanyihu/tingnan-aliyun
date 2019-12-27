@@ -99,4 +99,9 @@ public interface ISysJobService
      * @return 结果
      */
     public boolean checkCronExpressionIsValid(String cronExpression);
+
+    /**
+     * 告警消息推送
+     */
+    void push();
 }

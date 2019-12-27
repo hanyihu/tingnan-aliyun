@@ -1,9 +1,6 @@
 package com.ruoyi.api.service;
 
-import com.ruoyi.system.domain.InfoEvent;
-import com.ruoyi.system.domain.VAlarmReal;
-import com.ruoyi.system.domain.VAlarmhis;
-import com.ruoyi.system.domain.VLive;
+import com.ruoyi.system.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -29,6 +26,10 @@ public interface IAlarmService {
     InfoEvent getAlarmReal(String id);
 
     List<InfoEvent> getInfoEvent();
+
+    Integer getInfoEventCount();
+
+    void updateInfoEventCount(int newCount);
 }
 
 

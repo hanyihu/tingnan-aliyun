@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        user_id as userId,
        dept_id as deptId,
        app_id as appId,
+       cid as cId,
        login_name as loginName,
        user_name as userName,
        email as email,
