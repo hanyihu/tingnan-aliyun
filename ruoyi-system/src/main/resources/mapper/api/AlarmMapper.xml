@@ -111,31 +111,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <!--告警统计-->
-    <select id="getAlarmCountByDay" resultType="com.ruoyi.system.domain.VAlarmhis">
+    <select id="getAlarmCountByDay" resultType="map">
 
-        select
-        <include refid="VAlarmhisVo"></include>
-        from V_AlarmHis
-        <where>
-            <if test="startTime != null and startTime != ''">
-                AND  convert(varchar(7),StartTime,120) = #{startTime}
-            </if>
-        </where>
+        select datepart(dd,time_) [Day],count(id_) [counts] from info_event  where   convert(varchar(7),time_,120) = #{startTime}
+        group by datepart(dd,time_)
 
 
     </select>
 
-    <!--历史告警-->
+    <!--日期查询历史告警-->
     <select id="getAlarmHis" resultType="com.ruoyi.system.domain.InfoEvent">
         select
         <include refid="InfoEventVo"></include>
         from info_event
+
         <where>
+            event_ = 1
             <if test="startTime != null and startTime != ''">
                 and Convert(varchar(10),[time_],120) = Convert(varchar(10),#{startTime},120)
-            </if>
-            <if test="info != null and info != ''">
-                AND info_ like '%'+#{info}+ '%'
             </if>
 
         </where>
@@ -143,6 +136,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by time_ desc
 
     </select>
+
+    <!--全部历史告警-->
+    <select id="getAlarmHis1" resultType="com.ruoyi.system.domain.InfoEvent">
+        select
+        <include refid="InfoEventVo"></include>
+        from info_event
+        where event_ = 1
+        and DATEDIFF(day,time_,GETDATE()) > 0
+
+        order by time_ desc
+
+    </select>
+
 
     <!--历史告警-数据曲线-历史数据-->
     <select id="getAlarmInfo" resultType="com.ruoyi.system.domain.VAlarmhis">
@@ -176,6 +182,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="InfoEventVo"/>
         from info_event
         where event_ = 1
+        and time_ BETWEEN CONVERT(varchar(100), GETDATE(), 23) +' 00:00:00' AND CONVERT(varchar(100), GETDATE(), 23) +'
+        23:59:59'
         order by time_ desc
     </select>
 

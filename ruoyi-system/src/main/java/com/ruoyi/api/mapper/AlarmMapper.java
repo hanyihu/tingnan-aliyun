@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hanyihu
@@ -17,9 +18,11 @@ public interface AlarmMapper {
 
     List<VLive> getRealData(@Param("systemType") String systemType);
 
-    List<VAlarmhis> getAlarmCountByDay(@Param("startTime") String date);
+    List<Map<String, Integer>> getAlarmCountByDay(@Param("startTime") String date);
 
-    List<InfoEvent> getAlarmHis(@Param("startTime") String date, @Param("info") String info);
+    List<InfoEvent> getAlarmHis(@Param("startTime") String date);
+
+    List<InfoEvent> getAlarmHis1();
 
     VAlarmhis getAlarmInfo(@Param("id") String id);
 

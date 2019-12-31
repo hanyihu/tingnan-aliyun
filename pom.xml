@@ -270,8 +270,10 @@
 		<pluginRepository>
 			<id>public</id>
 			<name>aliyun nexus</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-			<releases>
+            <!--<url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
+            <url>https://mvnrepository.com/artifact/org.apache.shiro/shiro-cas</url>
+
+            <releases>
 				<enabled>true</enabled>
 			</releases>
 			<snapshots>

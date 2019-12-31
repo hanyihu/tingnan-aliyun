@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author hanyihu
@@ -45,13 +44,21 @@ public class AlarmControllerApi extends BaseController {
      * @Author: 韩以虎
      * @Date: 2019/11/13 15:39
      */
-    @ApiOperation(value = "每天的告警数量", notes = "date", produces = "application/josn")
+    @ApiOperation(value = "告警统计", notes = "date", produces = "application/josn")
     @PostMapping("/getAlarmCountByDay")
     public AjaxResult getAlarmCountByDay(String date){
       logger.info("获取的前端传来的日期=={}",date);
 
-          List<VAlarmhis>  data =alarmService.getAlarmCountByDay(date);
-      if(null != data){
+        //根据月份计算天数
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(DateUtils.parseDate(date));
+        int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        logger.info("{}的天数为==={}", date, days);
+
+        List<Map<String, Integer>> data = alarmService.getAlarmCountByDay(date);
+        logger.info("data===={}", data.toString());
+        if (null != data) {
+
           return AjaxResult.success(data);
       }
         //  数据表 v_alarmhis
@@ -65,11 +72,17 @@ public class AlarmControllerApi extends BaseController {
 
         //由字符串日期转化为date类型的日期
         //  Date parseDate = DateUtils.parseDate(date);
-
         logger.info("历史告警记录前一段传来的日期==={}",date);
         logger.info("历史告警记录前一段传来的页数==={}",pageindex);
         PageHelper.startPage(Integer.parseInt(pageindex), 7);
-        List<InfoEvent> list = alarmService.getAlarmHis(date, "解除");
+        logger.info("date为空={}", date.equals(""));
+        List<InfoEvent> list = null;
+        if (date.equals("")) {
+            list = alarmService.getAlarmHis1();
+        } else {
+            list = alarmService.getAlarmHis(date);
+        }
+
         PageInfo<InfoEvent> pageInfo = new PageInfo<>(list);
         return  pageInfo;
    }
@@ -176,36 +189,7 @@ public class AlarmControllerApi extends BaseController {
     }
 
 
-    @ApiOperation(value = "模拟量日报", notes = "", produces = "application/josn")
-    @PostMapping("/getReportMN")
-    public AjaxResult getReportMN(String Date, String SystemType){
 
-        /*
-        *  public IEnumerable<ReportMNEntity> GetDayData(string Date,string SystemType)
-        {
-            RepositoryFactory repositoryFactory = new RepositoryFactory();
-            string sql = "select * from ReportMN where ReportDay='"+Date+"' ";
-            if(!string.IsNullOrEmpty(SystemType)&&SystemType!="全部")
-            {
-                sql += " and charindex('" + SystemType + "', SystemType)>0 ";
-            }
-            sql += " order by TagName";
-
-           return repositoryFactory.BaseRepository().FindList<ReportMNEntity>(sql);
-        }
-        * */
-
-        return AjaxResult.error();
-    }
-
-
-    @ApiOperation(value = "短信记录", notes = "", produces = "application/josn")
-    @PostMapping("/getSmsDay")
-    public AjaxResult getSmsDay(String Date, String pageindex){
-
-    /*  未找到*/
-        return AjaxResult.error();
-    }
 
 
 

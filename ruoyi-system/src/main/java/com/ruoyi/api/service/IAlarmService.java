@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hanyihu
@@ -17,9 +18,11 @@ public interface IAlarmService {
 
     List<VLive> getRealData(String queryJson);
 
-    List<VAlarmhis> getAlarmCountByDay(String date);
+    List<Map<String, Integer>> getAlarmCountByDay(String date);
 
-    List<InfoEvent> getAlarmHis(String date, String info);
+    List<InfoEvent> getAlarmHis(String date);
+
+    List<InfoEvent> getAlarmHis1();
 
     VAlarmhis getAlarmInfo(String id);
 

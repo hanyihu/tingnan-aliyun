@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hanyihu
@@ -30,13 +31,18 @@ public class AlarmServiceImpl implements IAlarmService {
     }
 
     @Override
-    public List<VAlarmhis> getAlarmCountByDay(String date) {
+    public List<Map<String, Integer>> getAlarmCountByDay(String date) {
         return alarmMapper.getAlarmCountByDay(date);
     }
 
     @Override
-    public List<InfoEvent> getAlarmHis(String date, String info) {
-        return alarmMapper.getAlarmHis(date, info);
+    public List<InfoEvent> getAlarmHis(String date) {
+        return alarmMapper.getAlarmHis(date);
+    }
+
+    @Override
+    public List<InfoEvent> getAlarmHis1() {
+        return alarmMapper.getAlarmHis1();
     }
 
     @Override
