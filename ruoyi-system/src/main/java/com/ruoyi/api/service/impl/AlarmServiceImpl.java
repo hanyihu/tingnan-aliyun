@@ -54,8 +54,8 @@ public class AlarmServiceImpl implements IAlarmService {
     }
 
     @Override
-    public List<InfoEvent> getInfoEvent() {
-        return alarmMapper.getInfoEvent();
+    public List<VTagInfoAlarm> getTagInfoAlarm() {
+        return alarmMapper.getTagInfoAlarm();
     }
 
     @Override

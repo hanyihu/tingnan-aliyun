@@ -20,6 +20,7 @@ import com.ruoyi.quartz.service.ISysJobService;
 import com.ruoyi.quartz.util.CronUtils;
 import com.ruoyi.quartz.util.ScheduleUtils;
 import com.ruoyi.system.domain.InfoEvent;
+import com.ruoyi.system.domain.VTagInfoAlarm;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
@@ -283,21 +284,22 @@ public class SysJobServiceImpl implements ISysJobService
     public void push() {
         IGtPush push = new IGtPush(host, appKey, masterSecret);
         //先进行告警数据查询 是否有告警信息
-        List<InfoEvent> infoEvent = alarmService.getInfoEvent();
+        List<VTagInfoAlarm> tagInfoAlarm = alarmService.getTagInfoAlarm();
 
         //查询阿里云数据库中告警数量
         int count = alarmService.getInfoEventCount();
-        System.out.println("数量不相等=====" + (count != infoEvent.size()));
-        if (count != infoEvent.size()) {
+        System.out.println("数量不相等=====" + (count != tagInfoAlarm.size()));
+        System.out.println("今日告警数量===" + tagInfoAlarm.size());
+        if (count != tagInfoAlarm.size()) {
             System.out.println("=============进入到推送========");
             Style0 style = new Style0();
             // STEP2：设置推送标题、推送内容
 
-            System.out.println("标题====" + infoEvent.get(0).getTagname());
-            System.out.println("内容====" + infoEvent.get(0).getInfo());
+            System.out.println("标题====" + tagInfoAlarm.get(0).getTagName());
+            System.out.println("内容====" + tagInfoAlarm.get(0).getSystemType());
 
-            style.setTitle(infoEvent.get(0).getTagname());
-            style.setText(infoEvent.get(0).getInfo());
+            style.setTitle(tagInfoAlarm.get(0).getTagName());
+            style.setText(tagInfoAlarm.get(0).getSystemType());
             style.setLogo("push.png");  // 设置推送图标
 
             // STEP3：设置响铃、震动等推送效果
@@ -329,7 +331,7 @@ public class SysJobServiceImpl implements ISysJobService
             if (ret.getResponse().get("result").toString().equals("ok")) {
                 System.out.println("修改=============================");
                 //把数量更新到info_event_count 中
-                alarmService.updateInfoEventCount(infoEvent.size());
+                alarmService.updateInfoEventCount(tagInfoAlarm.size());
             }
 
         }

@@ -10,10 +10,7 @@ import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.DataSourceType;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.system.domain.InfoEvent;
-import com.ruoyi.system.domain.VAlarmReal;
-import com.ruoyi.system.domain.VAlarmhis;
-import com.ruoyi.system.domain.VLive;
+import com.ruoyi.system.domain.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,13 +159,13 @@ public class AlarmControllerApi extends BaseController {
 
     @ApiOperation(value = "实时告警列表", notes = "", produces = "application/josn")
     @PostMapping("/getAlarmList")
-    public PageInfo<InfoEvent> getAlarmList(String pageindex) {
+    public PageInfo<VTagInfoAlarm> getAlarmList(String pageindex) {
 
         logger.info("获取的页数数据=={}==={}", pageindex);
         //  startPage();
         PageHelper.startPage(Integer.parseInt(pageindex), 7);
-        List<InfoEvent> infoEvents = alarmService.getInfoEvent();
-        PageInfo<InfoEvent> pageInfo = new PageInfo<InfoEvent>(infoEvents);
+        List<VTagInfoAlarm> vTagInfoAlarms = alarmService.getTagInfoAlarm();
+        PageInfo<VTagInfoAlarm> pageInfo = new PageInfo<VTagInfoAlarm>(vTagInfoAlarms);
         return pageInfo;
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.api.mapper.AlarmMapper">
 
@@ -90,6 +90,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	</sql>
 
+    <sql id="VTagInfoAlarm">
+       TagKey as tagKey,
+       TagName as tagName,
+       SystemType as systemType,
+       value as value,
+       timestamp as timestamps,
+       TagStatus as tagStatus
+    </sql>
+
     <!--更新阿里云info_event_count告警数量-->
     <update id="updateInfoEventCount">
         update info_event_count set counts = #{newCount} where 1 = 1
@@ -177,14 +186,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <!--告警数据InfoEvent-->
-    <select id="getInfoEvent" resultType="com.ruoyi.system.domain.InfoEvent">
+    <select id="getTagInfoAlarm" resultType="com.ruoyi.system.domain.VTagInfoAlarm">
         select
-        <include refid="InfoEventVo"/>
-        from info_event
-        where event_ = 1
-        and time_ BETWEEN CONVERT(varchar(100), GETDATE(), 23) +' 00:00:00' AND CONVERT(varchar(100), GETDATE(), 23) +'
-        23:59:59'
-        order by time_ desc
+        <include refid="VTagInfoAlarm"/>
+        from V_TagInfoAlarm
+
+        order by timestamp desc
     </select>
 
     <select id="getInfoEventCount" resultType="java.lang.Integer">

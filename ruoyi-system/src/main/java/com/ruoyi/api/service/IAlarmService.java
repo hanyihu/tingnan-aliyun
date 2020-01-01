@@ -28,7 +28,7 @@ public interface IAlarmService {
 
     InfoEvent getAlarmReal(String id);
 
-    List<InfoEvent> getInfoEvent();
+    List<VTagInfoAlarm> getTagInfoAlarm();
 
     Integer getInfoEventCount();
 

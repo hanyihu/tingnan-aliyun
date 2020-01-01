@@ -28,7 +28,7 @@ public interface AlarmMapper {
 
     InfoEvent getAlarmReal(@Param("id") String id);
 
-    List<InfoEvent> getInfoEvent();
+    List<VTagInfoAlarm> getTagInfoAlarm();
 
     int getInfoEventCount();
 
