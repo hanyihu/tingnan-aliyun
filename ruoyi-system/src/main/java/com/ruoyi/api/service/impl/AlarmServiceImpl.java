@@ -2,6 +2,8 @@ package com.ruoyi.api.service.impl;
 
 import com.ruoyi.api.mapper.AlarmMapper;
 import com.ruoyi.api.service.IAlarmService;
+import com.ruoyi.common.annotation.DataSource;
+import com.ruoyi.common.enums.DataSourceType;
 import com.ruoyi.system.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import java.util.Map;
  * @title
  * @date 2019/11/7 9:17
  */
+@DataSource(value = DataSourceType.SLAVE)
 @Service
 public class AlarmServiceImpl implements IAlarmService {
 
@@ -66,5 +69,20 @@ public class AlarmServiceImpl implements IAlarmService {
     @Override
     public void updateInfoEventCount(int newCount) {
         alarmMapper.updateInfoEventCount(newCount);
+    }
+
+    @Override
+    public void insertFeedBack(Feedback feedback) {
+        alarmMapper.insertFeedBack(feedback);
+    }
+
+    @Override
+    public List<Feedback> getFeedBack() {
+        return alarmMapper.getFeedBack();
+    }
+
+    @Override
+    public Feedback getFeedBackById(String id) {
+        return alarmMapper.getFeedBackById(id);
     }
 }

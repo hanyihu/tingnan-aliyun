@@ -3,21 +3,31 @@ package com.ruoyi.api.controller.monitor;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.api.service.IAlarmService;
+import com.ruoyi.api.service.IUserService;
 import com.ruoyi.common.annotation.DataSource;
+import com.ruoyi.common.config.Global;
+import com.ruoyi.common.config.ServerConfig;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.DataSourceType;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.system.domain.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -28,11 +38,13 @@ import java.util.*;
 @Api("监测数据")
 @RestController
 @RequestMapping("/api/alarm")
-@DataSource(value = DataSourceType.SLAVE)
 public class AlarmControllerApi extends BaseController {
 
     @Autowired
     private IAlarmService alarmService;
+
+    @Autowired
+    private IUserService userService;
     /**
      * 功能描述: <br> 告警统计
      * 〈〉
@@ -109,49 +121,7 @@ public class AlarmControllerApi extends BaseController {
     @PostMapping("/getHisData")
     public AjaxResult getHisData(String tags, String date){
            logger.info("tags===={}，，，date===={}",tags,date);
-        /*
-        * public string GetHisData(string Tags, string sdate, string edate)
-        {
 
-            StringBuilder sb = new StringBuilder();
-            RepositoryFactory repositoryFactory = new RepositoryFactory();
-
-            var TagInfoS = repositoryFactory.BaseRepository().FindList<TagInfoEntity>("select * from TagInfo where TagKey in ('" + Tags.Replace(",", "','") + "')");
-
-
-            var dataAll = repositoryFactory.BaseRepository().FindList<LiveDataEntity>("select * from V_His where TagKey in ('" + Tags.Replace(",", "','") + "')  and timestamp>='" + sdate + " 00:00:01' and  timestamp<='" + edate + " 23:59:59' order by timestamp");
-
-
-            sb.Append("{");
-
-            string legend = "";
-            sb.Append("\"Series\":[");
-            foreach (TagInfoEntity s in TagInfoS)
-            {
-                legend += ",\"" + s.TagName + "\"";
-
-                string tagkey = s.TagKey;
-                var data = from item in dataAll
-                           where item.TagKey.ToLower() == tagkey.ToLower()
-                           orderby item.timestamp
-                           select item;
-
-                var list = data.ToList<LiveDataEntity>();
-                sb.Append(",{\"name\": \"" + s.TagName + "\",\"type\": \"line\",\"showSymbol\": \"false\",\"hoverAnimation\": \"false\",\"data\":[");
-                foreach (LiveDataEntity ld in list)
-                {
-                    string name = ((DateTime)ld.timestamp).ToString("yyyy/M/d HH:mm:ss");
-                    sb.Append(",{\"name\":\"" + name + "\",\"value\":[\"" + name + "\",\"" + ld.value + "\"]}");
-                }
-                sb.Append("]}");
-            }
-            sb.Append("]");
-            legend = legend.Substring(1);
-            sb.Append(",\"LegendData\":[" + legend + "]");
-            sb.Append("}");
-            return sb.ToString().Replace("[,", "[").Replace("{,", "{").Replace(",]", "]");
-        }
-        * */
 
         return AjaxResult.error();
     }
@@ -186,6 +156,114 @@ public class AlarmControllerApi extends BaseController {
     }
 
 
+    /**
+     * 功能描述: <br> 多图上传
+     * 〈〉
+     *
+     * @Param: [token, imgData]
+     * @Return: com.ruoyi.common.core.domain.AjaxResult
+     * @Author: 韩以虎
+     * @Date: 2019/11/12 15:04
+     */
+    @ApiOperation(value = "多图上传", notes = " imgDatas:图片", produces = "application/json")
+    @PostMapping("/imgupload")
+
+    public AjaxResult imgupload(@RequestParam(value = "imgList") List<String> imgList, String title, String content, String userId) {
+        logger.info("前端传来的imgDatas地址=={}", imgList);
+        logger.info("前端传来的userId=={}==={}==={}", userId, title, content);
+        //截取[]
+        String img = imgList.toString().substring(1, imgList.toString().length() - 1);
+
+        SysUser sysUser = userService.getUserInforById(userId);
+        Feedback feedback = new Feedback();
+        feedback.setUserId(Integer.parseInt(userId));
+        feedback.setTitle(title);
+        feedback.setContent(content);
+        feedback.setUserName(sysUser.getUserName());
+
+        feedback.setImages(img);
+        logger.info("图片========={}", img);
+        alarmService.insertFeedBack(feedback);
+
+       /* for (int i = 0; i <imgList.size() ; i++) {
+            logger.info("图片=={}",imgList.get(i));
+        }*/
+        //String userAvatar = photo(imgDatas);
+        // logger.info("头像存放路径=={}",userAvatar);
+
+        return AjaxResult.success();
+    }
+
+    /**
+     * 功能描述: <br> 多图上传
+     * 〈〉
+     *
+     * @Param: [token, imgData]
+     * @Return: com.ruoyi.common.core.domain.AjaxResult
+     * @Author: 韩以虎
+     * @Date: 2019/11/12 15:04
+     */
+    @ApiOperation(value = "多图上传", notes = " imgDatas:图片", produces = "application/json")
+    @PostMapping("/imgupload1")
+    @ResponseBody
+    public String imgupload1(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Access-Control-Allow-Origin", "*");// 跨域
+
+        String imgPath = "";
+        CommonsMultipartResolver cmr = new CommonsMultipartResolver(request.getServletContext());
+        if (cmr.isMultipart(request)) {
+            MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) (request);
+            Iterator<String> files = mRequest.getFileNames();
+
+            while (files.hasNext()) {
+                MultipartFile mFile = mRequest.getFile(files.next());
+                if (mFile != null) {
+                    // 上传文件路径
+                    String filePath = Global.getUploadPath();
+                    // 上传并返回新文件名称
+
+                    String fileName = FileUploadUtils.upload(filePath, mFile);
+                    //String url = serverConfig.getUrl() + fileName;
+                    String url = "http://47.108.30.209:8085" + fileName;
+
+                    logger.info("filepath==={}", fileName);
+                    logger.info("url==={}", url);
+
+                    imgPath += url + "##";
+                }
+            }
+
+        }
+        return imgPath;
+    }
+
+
+    @ApiOperation(value = "信息反馈", notes = "", produces = "application/josn")
+    @PostMapping("/getFeedBack")
+    public PageInfo<Feedback> getFeedBack(String pageindex) {
+
+        logger.info("获取的页数数据=={}==={}", pageindex);
+        //  startPage();
+        PageHelper.startPage(Integer.parseInt(pageindex), 8);
+        List<Feedback> feedbacks = alarmService.getFeedBack();
+        PageInfo<Feedback> pageInfo = new PageInfo<Feedback>(feedbacks);
+        return pageInfo;
+    }
+
+
+    @ApiOperation(value = "根据id获取信息反馈详情", notes = "", produces = "application/josn")
+    @PostMapping("/getFeedBackById")
+    public AjaxResult getFeedBackById(String id) {
+
+        logger.info("获取的id数据=={}==={}", id);
+
+        Feedback feedbacks = alarmService.getFeedBackById(id);
+        if (feedbacks != null) {
+
+            return AjaxResult.success(feedbacks);
+        }
+        return AjaxResult.error("获取详情信息失败！");
+    }
 
 
 

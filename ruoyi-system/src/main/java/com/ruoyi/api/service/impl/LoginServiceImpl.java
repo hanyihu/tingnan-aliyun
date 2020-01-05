@@ -3,10 +3,13 @@ package com.ruoyi.api.service.impl;
 import com.ruoyi.api.mapper.LoginMapper;
 import com.ruoyi.api.service.ILoginService;
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.domain.SysUserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author hanyihu
@@ -82,5 +85,10 @@ public class LoginServiceImpl implements ILoginService {
     @Override
     public void updatecId(String cId, String userId) {
         loginMapper.updatecId(cId, userId);
+    }
+
+    @Override
+    public List<SysUserRole> getUserRole(String userId) {
+        return loginMapper.getUserRole(userId);
     }
 }

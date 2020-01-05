@@ -33,6 +33,13 @@ public interface IAlarmService {
     Integer getInfoEventCount();
 
     void updateInfoEventCount(int newCount);
+
+    void insertFeedBack(Feedback feedback);
+
+    List<Feedback> getFeedBack();
+
+
+    Feedback getFeedBackById(String id);
 }
 
 

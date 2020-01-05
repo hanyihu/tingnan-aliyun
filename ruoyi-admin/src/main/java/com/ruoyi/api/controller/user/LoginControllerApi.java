@@ -7,6 +7,7 @@ import com.ruoyi.common.redisManager.RedisTokenManager;
 import com.ruoyi.common.redisManager.RedisUtil;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.domain.SysUserRole;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -78,7 +80,12 @@ public class LoginControllerApi extends BaseController {
                  //设置缓存并设置过期时间 秒
                 // redisUtil.set(String.valueOf(sysUser.getUserId()),token,60*60*24);
 */
-                 return AjaxResult.success("验证成功！",userId);
+
+                 //根据用户id查询用户权限
+                 List<SysUserRole> sysUserRole = loginService.getUserRole(userId);
+
+
+                 return AjaxResult.success("验证成功！", sysUserRole.get(0));
              }
          }
 

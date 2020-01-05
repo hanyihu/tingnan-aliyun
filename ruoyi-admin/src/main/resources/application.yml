@@ -9,7 +9,7 @@ ruoyi:
   # 实例演示开关
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: D:/ruoyi/uploadPath
+  profile: C:\work\project\picture\photos
   # 获取ip地址开关
   addressEnabled: true
 
@@ -63,7 +63,7 @@ spring:
        # 单个文件大小
        max-file-size:  10MB
        # 设置总上传的文件大小
-       max-request-size:  20MB
+       max-request-size:  50MB
   # 服务模块
   devtools:
     restart:

@@ -1,7 +1,10 @@
 package com.ruoyi.api.service;
 
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.domain.SysUserRole;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author hanyihu
@@ -35,6 +38,11 @@ public interface ILoginService {
      * 修改cId
      */
     void updatecId(String cId, String userId);
+
+    /**
+     * 查询用户角色
+     */
+    List<SysUserRole> getUserRole(String userId);
 }
 
 

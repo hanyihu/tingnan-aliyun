@@ -8,13 +8,13 @@ spring:
             master:
                 url: jdbc:sqlserver://localhost:1433;SelectMethod=cursor;DatabaseName=ry
                 username: sa
-                password: 123456
+                password: sa@123
             # 从库数据源
             slave:
 
                 # 从数据源开关/默认关闭
                 enabled: true
-                url: jdbc:sqlserver://47.108.30.209:1433;SelectMethod=cursor;DatabaseName=GZSCADA
+                url: jdbc:sqlserver://localhost:1433;SelectMethod=cursor;DatabaseName=GZSCADA
                 username: sa
                 password: sa@123
             # 初始连接数

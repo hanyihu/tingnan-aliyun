@@ -1,7 +1,10 @@
 package com.ruoyi.api.mapper;
 
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.domain.SysUserRole;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author hanyihu
@@ -20,4 +23,6 @@ public interface LoginMapper {
     void updatePasswordByLoginName(@Param("loginName") String loginName, @Param("password") String password);
 
     void updatecId(@Param("cId") String cId, @Param("userId") String userId);
+
+    List<SysUserRole> getUserRole(@Param("userId") String userId);
 }

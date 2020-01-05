@@ -99,6 +99,16 @@
        TagStatus as tagStatus
     </sql>
 
+    <sql id="FeedBack">
+        id as id,
+        user_id as userId,
+        title as title,
+        content as content,
+        user_name as userName,
+        images as images,
+        create_time as createTime
+    </sql>
+
     <!--更新阿里云info_event_count告警数量-->
     <update id="updateInfoEventCount">
         update info_event_count set counts = #{newCount} where 1 = 1
@@ -198,5 +208,42 @@
         select counts from info_event_count
     </select>
 
+    <!--信息反馈-->
+    <select id="getFeedBack" resultType="com.ruoyi.system.domain.Feedback">
+        select
+        <include refid="FeedBack"></include>
+        from feedback
+        order by create_time desc
+    </select>
+
+    <!--根信息反馈id查找信息祥情-->
+    <select id="getFeedBackById" resultType="com.ruoyi.system.domain.Feedback">
+        select
+        <include refid="FeedBack"/>
+        from feedback
+        where id = #{id}
+    </select>
+
+    <insert id="insertFeedBack" parameterType="com.ruoyi.system.domain.Feedback" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into feedback(
+
+        <if test="userId != null and userId != 0">user_id,</if>
+        <if test="userName != null and userName != ''">user_name,</if>
+        <if test="title != null and title != ''">title,</if>
+        <if test="content != null and content != ''">content,</if>
+        <if test="images != null and images != ''">images,</if>
+        create_time
+        )values(
+        <if test="userId != null and userId != ''">#{userId},</if>
+
+        <if test="userName != null and userName != ''">#{userName},</if>
+        <if test="title != null and title != ''">#{title},</if>
+        <if test="content != null and content != ''">#{content},</if>
+        <if test="images != null and images != ''">#{images},</if>
+
+        GETDATE()
+        )
+    </insert>
 
 </mapper>

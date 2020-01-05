@@ -1,5 +1,7 @@
 package com.ruoyi.api.mapper;
 
+import com.ruoyi.common.annotation.DataSource;
+import com.ruoyi.common.enums.DataSourceType;
 import com.ruoyi.system.domain.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,9 +14,8 @@ import java.util.Map;
  * @title
  * @date 2019/11/7 9:27
  */
+
 public interface AlarmMapper {
-
-
 
     List<VLive> getRealData(@Param("systemType") String systemType);
 
@@ -33,4 +34,10 @@ public interface AlarmMapper {
     int getInfoEventCount();
 
     void updateInfoEventCount(@Param("newCount") int newCount);
+
+    void insertFeedBack(Feedback feedback);
+
+    List<Feedback> getFeedBack();
+
+    Feedback getFeedBackById(@Param("id") String id);
 }
