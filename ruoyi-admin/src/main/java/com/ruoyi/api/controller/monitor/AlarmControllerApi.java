@@ -172,8 +172,8 @@ public class AlarmControllerApi extends BaseController {
         logger.info("前端传来的imgDatas地址=={}", imgList);
         logger.info("前端传来的userId=={}==={}==={}", userId, title, content);
         //截取[]
-        String img = imgList.toString().substring(1, imgList.toString().length() - 1);
-
+        //String img = imgList.toString().substring(1, imgList.toString().length() - 1);
+        String img = imgList.toString().replaceAll("(?:\\[|null|\\]| +)", "");
         SysUser sysUser = userService.getUserInforById(userId);
         Feedback feedback = new Feedback();
         feedback.setUserId(Integer.parseInt(userId));
