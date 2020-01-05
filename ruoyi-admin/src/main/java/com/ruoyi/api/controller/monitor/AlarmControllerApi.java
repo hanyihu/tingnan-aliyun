@@ -221,12 +221,15 @@ public class AlarmControllerApi extends BaseController {
                     // 上传文件路径
                     String filePath = Global.getUploadPath();
                     // 上传并返回新文件名称
-
+                    logger.info("filepath===={}", filePath);
                     String fileName = FileUploadUtils.upload(filePath, mFile);
-                    //String url = serverConfig.getUrl() + fileName;
-                    String url = "http://47.108.30.209:8085" + fileName;
 
-                    logger.info("filepath==={}", fileName);
+                    //截取后的filename
+                    String url = fileName.substring(9);
+                    logger.info("带回家读后感===" + url);
+                    //String url = serverConfig.getUrl() + fileName;
+                    // String url = "http://47.108.30.209:8085" + fileName;
+
                     logger.info("url==={}", url);
 
                     imgPath += url + "##";
