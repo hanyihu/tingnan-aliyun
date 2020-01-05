@@ -84,7 +84,7 @@ public class LoginControllerApi extends BaseController {
                  //根据用户id查询用户权限
                  List<SysUserRole> sysUserRole = loginService.getUserRole(userId);
 
-
+                 logger.info("用户权限ID==" + sysUserRole.get(0));
                  return AjaxResult.success("验证成功！", sysUserRole.get(0));
              }
          }
@@ -110,19 +110,28 @@ public class LoginControllerApi extends BaseController {
         SysUser userInfor = loginService.getUserInfor(mobile);
         if(userInfor==null){
 
-           SysUser sysUser = new SysUser();
+            SysUser sysUser = new SysUser();
             //对接受到的用户密码进行加密
             String password = passwordService.encryptPassword(mobile, pwd, "111111");
 
-           // Long userId = 10000L+ (new Random()).nextLong();
+            // Long userId = 10000L+ (new Random()).nextLong();
             //sysUser.setUserId(userId);
             sysUser.setLoginName(mobile);
             sysUser.setPassword(password);
             sysUser.setSalt("111111");
             sysUser.setUserName(userName);
+            sysUser.setDeptId(Long.parseLong("213"));
             logger.info("用户信息==={}",sysUser.toString());
-            loginService.insertUserInfo(sysUser);
-           return AjaxResult.success("注册成功！");
+            Integer i = loginService.insertUserInfo(sysUser);
+            logger.info("注册返回的用户id==={}", sysUser.getUserId());
+            if (sysUser.getUserId() != null) {
+                SysUserRole sysUserRole = new SysUserRole();
+                sysUserRole.setUserId(Long.valueOf(sysUser.getUserId()));
+                sysUserRole.setRoleId(Long.valueOf(2));
+                loginService.insertUserRole(sysUserRole);
+                return AjaxResult.success("注册成功！");
+            }
+
         }
 
         return AjaxResult.error("该手机号已注册,请直接登录！");

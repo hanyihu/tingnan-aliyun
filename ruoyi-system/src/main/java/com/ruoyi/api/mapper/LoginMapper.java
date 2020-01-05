@@ -18,11 +18,14 @@ public interface LoginMapper {
 
     SysUser getUserInfor(@Param("loginName") String loginName);
 
-    void insertUserInfo(SysUser userInfor);
+    int insertUserInfo(SysUser userInfor);
 
     void updatePasswordByLoginName(@Param("loginName") String loginName, @Param("password") String password);
 
     void updatecId(@Param("cId") String cId, @Param("userId") String userId);
 
     List<SysUserRole> getUserRole(@Param("userId") String userId);
+
+
+    void insertUserRole(SysUserRole sysUserRole);
 }

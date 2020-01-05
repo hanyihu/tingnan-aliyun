@@ -27,7 +27,7 @@ public interface ILoginService {
     /**
      * 注册用户信息
      * */
-    void insertUserInfo(SysUser userInfor);
+    Integer insertUserInfo(SysUser userInfor);
 
     /**
      * 通过账号修改密码
@@ -43,6 +43,11 @@ public interface ILoginService {
      * 查询用户角色
      */
     List<SysUserRole> getUserRole(String userId);
+
+    /**
+     * 插入角色id
+     */
+    void insertUserRole(SysUserRole sysUserRole);
 }
 
 

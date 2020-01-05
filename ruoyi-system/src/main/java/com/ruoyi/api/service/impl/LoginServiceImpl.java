@@ -61,9 +61,9 @@ public class LoginServiceImpl implements ILoginService {
      * @Date: 2019/12/22 16:03
      */
     @Override
-    public void insertUserInfo(SysUser userInfor) {
+    public Integer insertUserInfo(SysUser userInfor) {
 
-        loginMapper.insertUserInfo(userInfor);
+        return loginMapper.insertUserInfo(userInfor);
     }
 
 
@@ -90,5 +90,10 @@ public class LoginServiceImpl implements ILoginService {
     @Override
     public List<SysUserRole> getUserRole(String userId) {
         return loginMapper.getUserRole(userId);
+    }
+
+    @Override
+    public void insertUserRole(SysUserRole sysUserRole) {
+        loginMapper.insertUserRole(sysUserRole);
     }
 }

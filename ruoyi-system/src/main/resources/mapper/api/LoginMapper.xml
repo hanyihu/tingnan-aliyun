@@ -25,10 +25,49 @@
     </sql>
 
     <!--注册用户信息-->
-    <insert id="insertUserInfo" parameterType="com.ruoyi.system.domain.SysUser">
-        insert into sys_user(login_name,user_name,password,salt)
-        values (#{loginName},#{userName},#{password},#{salt})
+    <insert id="insertUserInfo" parameterType="com.ruoyi.system.domain.SysUser" useGeneratedKeys="true"
+            keyProperty="userId">
+        insert into sys_user(
 
+        <if test="deptId != null and deptId != ''">dept_id,</if>
+
+        <if test="loginName != null and loginName != ''">login_name,</if>
+        <if test="userName != null and userName != ''">user_name,</if>
+
+        <if test="loginName != null and loginName != ''">phonenumber,</if>
+        <if test="sex != null and sex != ''">sex,</if>
+        <if test="avatar != null and avatar != ''">avatar,</if>
+        <if test="password != null and password != ''">password,</if>
+        <if test="salt != null and salt != ''">salt,</if>
+
+        <if test="delFlag != null and delFlag != ''">del_flag,</if>
+        <if test="loginIp != null and loginIp != ''">login_ip,</if>
+        <if test="loginDate != null and loginDate != ''">login_date,</if>
+        create_time
+        )values(
+
+        <if test="deptId != null and deptId != ''">#{deptId},</if>
+
+        <if test="loginName != null and loginName != ''">#{loginName},</if>
+        <if test="userName != null and userName != ''">#{userName},</if>
+
+        <if test="loginName != null and loginName != ''">#{loginName},</if>
+        <if test="sex != null and sex != ''">#{sex},</if>
+        <if test="avatar != null and avatar != ''">#{avatar},</if>
+        <if test="password != null and password != ''">#{password},</if>
+        <if test="salt != null and salt != ''">#{salt},</if>
+
+        <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+        <if test="loginIp != null and loginIp != ''">#{loginIp},</if>
+        <if test="loginDate != null and loginDate != ''">#{loginDate},</if>
+        GETDATE()
+        )
+    </insert>
+
+    <!--插入角色id-->
+    <insert id="insertUserRole">
+        insert into sys_user_role(user_id,role_id)
+    values (#{userId},#{roleId})
     </insert>
 
     <!--通过登录张号修改密码-->
