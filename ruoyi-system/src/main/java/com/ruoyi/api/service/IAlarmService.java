@@ -38,8 +38,12 @@ public interface IAlarmService {
 
     List<Feedback> getFeedBack();
 
-
     Feedback getFeedBackById(String id);
+
+    List<Feedback> getFeedBackList(Feedback feedback);
+
+    int deleteFeedBackByIds(String ids);
+
 }
 
 

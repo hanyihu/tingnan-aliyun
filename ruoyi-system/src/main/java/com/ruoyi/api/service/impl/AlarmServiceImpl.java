@@ -2,7 +2,9 @@ package com.ruoyi.api.service.impl;
 
 import com.ruoyi.api.mapper.AlarmMapper;
 import com.ruoyi.api.service.IAlarmService;
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.annotation.DataSource;
+import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.enums.DataSourceType;
 import com.ruoyi.system.domain.*;
 import org.slf4j.Logger;
@@ -85,4 +87,18 @@ public class AlarmServiceImpl implements IAlarmService {
     public Feedback getFeedBackById(String id) {
         return alarmMapper.getFeedBackById(id);
     }
+
+
+    public List<Feedback> getFeedBackList(Feedback feedback) {
+        return alarmMapper.getFeedBackList(feedback);
+    }
+
+    @Override
+    public int deleteFeedBackByIds(String ids) {
+        Long[] feedBacks = Convert.toLongArray(ids);
+
+        return alarmMapper.deleteFeedBackByIds(feedBacks);
+    }
+
+
 }

@@ -109,6 +109,17 @@
         create_time as createTime
     </sql>
 
+
+    <resultMap id="FeedBackResult" type="com.ruoyi.system.domain.Feedback">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="createTime" column="create_time"/>
+        <result property="userName" column="user_name"/>
+        <result property="images" column="images"/>
+    </resultMap>
+
     <!--更新阿里云info_event_count告警数量-->
     <update id="updateInfoEventCount">
         update info_event_count set counts = #{newCount} where 1 = 1
@@ -224,6 +235,27 @@
         where id = #{id}
     </select>
 
+    <!--后台管理系统查询feedback信息-->
+    <select id="getFeedBackList" parameterType="com.ruoyi.system.domain.Feedback" resultMap="FeedBackResult">
+
+        select id, user_id, title, content, create_time , user_name , images
+        from feedback
+
+        where 1=1
+        <if test="title != null and title != ''">
+            AND title like '%'+#{title}+ '%'
+        </if>
+        <if test="userName != null and userName != ''">
+            AND user_name like '%'+#{userName}+ '%'
+        </if>
+
+        <!--<if test="params.beginTime != null and params.beginTime != ''">&lt;!&ndash; 开始时间检索 &ndash;&gt;
+            AND datediff(dd,#{params.beginTime},create_time)>=0
+        </if>-->
+
+
+    </select>
+
     <insert id="insertFeedBack" parameterType="com.ruoyi.system.domain.Feedback" useGeneratedKeys="true"
             keyProperty="id">
         insert into feedback(
@@ -245,5 +277,13 @@
         GETDATE()
         )
     </insert>
+
+    <!--批量删除反馈信息-->
+    <delete id="deleteFeedBackByIds" parameterType="Long">
+        delete feedback where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper>

@@ -40,4 +40,8 @@ public interface AlarmMapper {
     List<Feedback> getFeedBack();
 
     Feedback getFeedBackById(@Param("id") String id);
+
+    List<Feedback> getFeedBackList(Feedback feedback);
+
+    int deleteFeedBackByIds(Long[] ids);
 }

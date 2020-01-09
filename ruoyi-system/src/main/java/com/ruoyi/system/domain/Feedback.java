@@ -13,12 +13,12 @@ public class Feedback {
     /**
      * id
      */
-    private int id;
+    private Integer id;
 
     /**
      * 反馈人id
      */
-    private int userId;
+    private Integer userId;
 
     /**
      * 反馈人昵称
@@ -45,22 +45,18 @@ public class Feedback {
      */
     private String createTime;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
-
 
     public String getUserName() {
         return userName;
@@ -100,5 +96,18 @@ public class Feedback {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Feedback{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", images='" + images + '\'' +
+                ", createTime='" + createTime + '\'' +
+                '}';
     }
 }
