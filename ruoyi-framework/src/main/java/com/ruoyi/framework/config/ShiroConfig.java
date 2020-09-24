@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.config.ConfigurationException;
+
 import org.apache.shiro.io.ResourceUtils;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -37,7 +38,7 @@ import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 
 /**
  * 权限配置加载
- * 
+ *
  * @author ruoyi
  */
 @Configuration
@@ -326,11 +327,13 @@ public class ShiroConfig
     /**
      * 记住我
      */
+
     public CookieRememberMeManager rememberMeManager()
     {
+
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
         cookieRememberMeManager.setCookie(rememberMeCookie());
-        cookieRememberMeManager.setCipherKey(Base64.decode("fCq+/xW488hMTCD+cmJ3aQ=="));
+        cookieRememberMeManager.setCipherKey(Base64.decode(GenerateCipherKey.generateNewKey()));
         return cookieRememberMeManager;
     }
 

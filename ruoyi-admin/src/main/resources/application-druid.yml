@@ -6,17 +6,17 @@ spring:
         druid:
             # 主库数据源
             master:
-              url: jdbc:sqlserver://localhost:1433;SelectMethod=cursor;DatabaseName=ry
+                url: jdbc:sqlserver://localhost:1433;SelectMethod=cursor;DatabaseName=ry
                 username: sa
-                password: sa@123
+                password: tingnan123TNSQL
+
             # 从库数据源
             slave:
-
                 # 从数据源开关/默认关闭
                 enabled: true
                 url: jdbc:sqlserver://localhost:1433;SelectMethod=cursor;DatabaseName=GZSCADA
                 username: sa
-                password: sa@123
+                password: tingnan123TNSQL
             # 初始连接数
             initialSize: 5
             # 最小连接池数量
@@ -44,8 +44,8 @@ spring:
                 allow:
                 url-pattern: /druid/*
                 # 控制台管理用户名和密码
-                login-username: 
-                login-password: 
+                login-username:
+                login-password:
             filter:
                 stat:
 #                    enabled: true
